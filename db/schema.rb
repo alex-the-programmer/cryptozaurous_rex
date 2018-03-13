@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313063208) do
+ActiveRecord::Schema.define(version: 20180313063813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,12 +50,22 @@ ActiveRecord::Schema.define(version: 20180313063208) do
     t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
   end
 
+  create_table "parameter_values_permutations", id: false, force: :cascade do |t|
+    t.bigint "permutation_id", null: false
+    t.bigint "parameter_value_id", null: false
+  end
+
   create_table "parameters", force: :cascade do |t|
     t.bigint "strategy_id", null: false
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["strategy_id"], name: "index_parameters_on_strategy_id"
+  end
+
+  create_table "permutations", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "strategies", force: :cascade do |t|
@@ -78,5 +88,7 @@ ActiveRecord::Schema.define(version: 20180313063208) do
   add_foreign_key "back_tests", "strategies"
   add_foreign_key "back_tests", "time_frames"
   add_foreign_key "parameter_values", "parameters"
+  add_foreign_key "parameter_values_permutations", "parameter_values"
+  add_foreign_key "parameter_values_permutations", "permutations"
   add_foreign_key "parameters", "strategies"
 end
