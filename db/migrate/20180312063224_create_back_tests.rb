@@ -12,5 +12,11 @@ class CreateBackTests < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_foreign_key :currencies, :back_tests, foreign_key: 'from_currency'
+    add_foreign_key :currencies, :back_tests, foreign_key: 'from_currency'
+    add_foreign_key :strategies, :back_tests
+    add_foreign_key :time_frames, :back_tests
+    add_foreign_key :markets, :back_tests
   end
 end
