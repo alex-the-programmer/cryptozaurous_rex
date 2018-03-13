@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313064456) do
+ActiveRecord::Schema.define(version: 20180313065754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,6 +78,18 @@ ActiveRecord::Schema.define(version: 20180313064456) do
     t.index ["permutation_id"], name: "index_runs_on_permutation_id"
   end
 
+  create_table "statistics", force: :cascade do |t|
+    t.bigint "permutation_id", null: false
+    t.bigint "back_test_id", null: false
+    t.decimal "average_relative_profit", null: false
+    t.decimal "relative_profit_sum", null: false
+    t.integer "number_of_runs", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["back_test_id"], name: "index_statistics_on_back_test_id"
+    t.index ["permutation_id"], name: "index_statistics_on_permutation_id"
+  end
+
   create_table "strategies", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
@@ -103,4 +115,6 @@ ActiveRecord::Schema.define(version: 20180313064456) do
   add_foreign_key "parameters", "strategies"
   add_foreign_key "runs", "back_tests"
   add_foreign_key "runs", "permutations"
+  add_foreign_key "statistics", "back_tests"
+  add_foreign_key "statistics", "permutations"
 end

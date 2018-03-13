@@ -5,6 +5,7 @@ class BackTest < ApplicationRecord
   belongs_to :time_frame
   belongs_to :market
   has_many :runs, dependent: :destroy
+  has_many :statistics
 
   validates_presence_of :name, :status
 end
