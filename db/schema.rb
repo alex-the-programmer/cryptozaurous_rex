@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180312063224) do
+ActiveRecord::Schema.define(version: 20180313063208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,14 @@ ActiveRecord::Schema.define(version: 20180312063224) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "parameter_values", force: :cascade do |t|
+    t.bigint "parameter_id", null: false
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
+  end
+
   create_table "parameters", force: :cascade do |t|
     t.bigint "strategy_id", null: false
     t.string "name", null: false
@@ -69,5 +77,6 @@ ActiveRecord::Schema.define(version: 20180312063224) do
   add_foreign_key "back_tests", "markets"
   add_foreign_key "back_tests", "strategies"
   add_foreign_key "back_tests", "time_frames"
+  add_foreign_key "parameter_values", "parameters"
   add_foreign_key "parameters", "strategies"
 end
