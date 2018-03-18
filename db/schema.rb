@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180317235321) do
+ActiveRecord::Schema.define(version: 20180318015536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.string "status", default: "new", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["from_currency_id", "to_currency_id", "strategy_id", "time_frame_id", "market_id"], name: "index_back_tests_unique", unique: true
     t.index ["market_id"], name: "index_back_tests_on_market_id"
     t.index ["strategy_id"], name: "index_back_tests_on_strategy_id"
     t.index ["time_frame_id"], name: "index_back_tests_on_time_frame_id"
@@ -34,12 +35,14 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_currencies_on_name", unique: true
   end
 
   create_table "markets", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_markets_on_name", unique: true
   end
 
   create_table "parameter_values", force: :cascade do |t|
@@ -47,12 +50,14 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.string "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["parameter_id", "value"], name: "index_parameter_values_on_parameter_id_and_value", unique: true
     t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
   end
 
   create_table "parameter_values_permutations", id: false, force: :cascade do |t|
     t.bigint "permutation_id", null: false
     t.bigint "parameter_value_id", null: false
+    t.index ["permutation_id", "parameter_value_id"], name: "index_parameter_values_permutations_unique", unique: true
   end
 
   create_table "parameters", force: :cascade do |t|
@@ -60,6 +65,7 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["strategy_id", "name"], name: "index_parameters_on_strategy_id_and_name", unique: true
     t.index ["strategy_id"], name: "index_parameters_on_strategy_id"
   end
 
@@ -74,6 +80,7 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.decimal "score", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["back_test_id", "permutation_id"], name: "index_runs_on_back_test_id_and_permutation_id", unique: true
     t.index ["back_test_id"], name: "index_runs_on_back_test_id"
     t.index ["permutation_id"], name: "index_runs_on_permutation_id"
   end
@@ -94,6 +101,7 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_strategies_on_name", unique: true
   end
 
   create_table "time_frames", force: :cascade do |t|
@@ -102,6 +110,7 @@ ActiveRecord::Schema.define(version: 20180317235321) do
     t.interval "duration", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["from", "to"], name: "index_time_frames_on_from_and_to", unique: true
   end
 
   add_foreign_key "back_tests", "currencies", column: "from_currency_id"
