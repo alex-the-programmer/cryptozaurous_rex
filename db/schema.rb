@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180313065754) do
+ActiveRecord::Schema.define(version: 20180317235321) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 20180313065754) do
   end
 
   create_table "currencies", force: :cascade do |t|
-    t.string "currency", null: false
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 20180313065754) do
 
   create_table "parameter_values", force: :cascade do |t|
     t.bigint "parameter_id", null: false
-    t.string "value"
+    t.string "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["parameter_id"], name: "index_parameter_values_on_parameter_id"
@@ -70,8 +70,8 @@ ActiveRecord::Schema.define(version: 20180313065754) do
 
   create_table "runs", force: :cascade do |t|
     t.bigint "back_test_id", null: false
-    t.bigint "permutation_id"
-    t.decimal "score"
+    t.bigint "permutation_id", null: false
+    t.decimal "score", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["back_test_id"], name: "index_runs_on_back_test_id"
